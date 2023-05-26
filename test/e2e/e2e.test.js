@@ -3,6 +3,7 @@ const { expect } = require("chai");
 const { parseEther, formatEther } = require("ethers/lib/utils");
 const NetworkSnapshotter = require("../helpers/NetworkSnapshotter");
 const proxyAdminABI = require("./proxyAdminABI.json");
+const { expectEvent } = require("@openzeppelin/test-helpers");
 
 
 
@@ -14,8 +15,8 @@ const networkSnapshotter = new NetworkSnapshotter();
 
 describe("e2e test", () => {
    before("deploy contract", async () => {
-       await init();
-       await networkSnapshotter.firstSnapshot();
+       // await init();
+       // await networkSnapshotter.firstSnapshot();
    });
    after("revert", async () => {
        if (networkSnapshotter.snapshotIds.length > 0) {
@@ -24,22 +25,24 @@ describe("e2e test", () => {
    });
 
 
+   let _ceaBNBc, _Pstake_addressStore, _pool, _hbnb, _dao, _helioProvider, _stader_stakeManager, _stader_bnbx, _cerosRouter, _ankrBNB, _ceVault, _bnbJoin;
 
 
-   it("test", async () => {
-       // [signer0, signer1, signer2, signer3] = await ethers.getSigners();
-       // console.log(signer0.address);
-       // console.log(signer1.address);
+   const { t_ceaBNBc, t_Pstake_addressStore, t_pool, t_hbnb, t_dao, t_helioProvider, t_stader_stakeManager, t_stader_bnbx, t_cerosRouter, t_ankrBNB, t_ceVault, t_bnbJoin } = require('./deploy.json');
+   _ceaBNBc = t_ceaBNBc; _Pstake_addressStore = t_Pstake_addressStore; _pool = t_pool; _hbnb = t_hbnb; _dao = t_dao; _helioProvider = t_helioProvider;
+   _stader_stakeManager = t_stader_stakeManager; _stader_bnbx = t_stader_bnbx; _cerosRouter = t_cerosRouter; _ankrBNB = t_ankrBNB; _ceVault = t_ceVault; _bnbJoin = t_bnbJoin;
 
 
-       // const hbnb = await ethers.getContractAt("hBNB", "0xBFE45FDFAb94dd208676C42fb31a00068EfF39a1");
-       // const MyContract = await ethers.getContractFactory("hBNB");
-       // const contract = await MyContract.attach(
-       //   "0xBFE45FDFAb94dd208676C42fb31a00068EfF39a1" // The deployed contract address
-       // );
+   it("deposit success", async () => {
+       // await expectEvent();
+       const [signer0, signer1, signer2, signer3] = await ethers.getSigners();
+       // const helioProviderProxy = await ethers.getContractAt("HelioProvider", _helioProvider);
+       // await helioProviderProxy.connect(signer1).provide({ value: parseEther("100")});
+
+
+       const hbnb = await ethers.getContractAt("hBNB", _hbnb);
+       console.log(await hbnb.balanceOf(signer1.address));
       
-       // const name = await contract.total();
-       // console.log(name);
    })
   
 });
@@ -257,4 +260,3 @@ async function upgradeProxy(proxyContractAddress, owner, impAddress) {
 
 
    console.log(`upgrade ${proxyContractAddress} success, new Imp: ${impAddress}`);
-}
